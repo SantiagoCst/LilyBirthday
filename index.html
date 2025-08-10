@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FF6B9D">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Happy Birthday">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000000 url('triples-bg.jpg') center/cover fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Dark overlay for better text readability */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Welcome Screen Styles */
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transform: scale(0);
+            animation: cardAppear 1s ease-out 0.5s forwards;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .welcome-title {
+            color: #FF6B9D;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #E0E0E0;
+            border-radius: 50px;
+            outline: none;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .name-input:focus {
+            border-color: #FF6B9D;
+            box-shadow: 0 0 20px rgba(255, 107, 157, 0.2);
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #FF6B9D, #FF8E9B);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 107, 157, 0.3);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 107, 157, 0.4);
+        }
+
+        .error-message {
+            color: #FF4757;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255, 71, 87, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            display: none;
+        }
+
+        /* Birthday Screen Styles */
+        .birthday-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .birthday-header {
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+
+        .birthday-title {
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .american-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        .roblox-icon {
+            width: 60px;
+            height: 60px;
+            background: #00A2FF;
+            border-radius: 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 0 10px;
+            animation: spin 3s linear infinite;
+        }
+
+        .scroll-indicator {
+            color: white;
+            font-size: 1.2rem;
+            margin-top: 30px;
+            animation: pulse 2s infinite;
+        }
+
+        .scroll-arrow {
+            font-size: 2rem;
+            color: white;
+            margin-top: 10px;
+            animation: bounceArrow 1.5s ease-in-out infinite;
+        }
+
+        .message-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 500px;
+            width: 100%;
+            margin: 50px 0;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 1s ease;
+        }
+
+        .message-section.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .cake-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        .birthday-message {
+            color: #333;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .surprise-btn {
+            background: linear-gradient(45deg, #FF6B9D, #4A90E2);
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .surprise-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .surprise-btn:hover::before {
+            left: 100%;
+        }
+
+        .surprise-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Video Modal Styles */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .video-container {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: #FF6B9D;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Animations */
+        @keyframes cardAppear {
+            to { transform: scale(1); }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.3); }
+            to { text-shadow: 2px 2px 20px rgba(255, 255, 255, 0.6); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes bounceArrow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        /* Remove the American flag background effect since we have the new background */
+        /* .stars-stripes styles removed */
+
+        /* Responsive */
+        @media (max-width: 400px) {
+            .birthday-title { font-size: 2rem; }
+            .american-icons { font-size: 2rem; }
+            .roblox-icon { width: 40px; height: 40px; font-size: 1rem; }
+            .welcome-title { font-size: 2rem; }
+            .birthday-message { font-size: 1.1rem; }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Remove the stars-stripes div since we have the new background -->
+
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-card">
+            <div class="welcome-title">🎉 Welcome! 🎉</div>
+            <div class="welcome-subtitle">Please enter your full name to continue:</div>
+            
+            <input type="text" class="name-input" id="nameInput" placeholder="Enter your name..." maxlength="50">
+            
+            <button class="submit-btn" onclick="checkName()">Enter</button>
+            
+            <div class="error-message" id="errorMessage"></div>
+        </div>
+    </div>
+
+    <!-- Birthday Screen -->
+    <div class="birthday-screen" id="birthdayScreen">
+        <div class="birthday-header">
+            <div class="birthday-title">Happy Birthday, Lily! 🎂</div>
+            <div class="american-icons">
+                🇺🇸 🦅 🗽
+                <div class="roblox-icon">R</div>
+                ⭐ 🎆
+            </div>
+            <div class="scroll-indicator">Scroll down for your special message</div>
+            <div class="scroll-arrow">⬇️</div>
+        </div>
+
+        <div class="message-section" id="messageSection">
+            <div class="cake-icon">🎂</div>
+            <div class="birthday-message">
+                Hey Lily! ✨<br><br>
+                
+                On this special day, I want you to know how grateful I am to have you as a friend. 
+                Your energy, your humor, and your amazing personality light up every room you enter! 
+                <br><br>
+                
+                Whether we're talking about Roblox adventures, sharing laughs, or just being ourselves, 
+                you always make everything better. I hope this new year brings you all the happiness, 
+                success, and amazing experiences you deserve! 🎈
+                <br><br>
+                
+                Get ready for your surprise... 🎁
+            </div>
+            
+            <button class="surprise-btn" onclick="showSurprise()">
+                What's the surprise? 🎵
+            </button>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-container">
+            <button class="close-btn" onclick="closeSurprise()">×</button>
+            <video id="surpriseVideo" controls style="max-width: 100%; max-height: 100%; border-radius: 15px;">
+                <source src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <script>
+        function checkName() {
+            const nameInput = document.getElementById('nameInput');
+            const errorMessage = document.getElementById('errorMessage');
+            const inputName = nameInput.value.trim().toLowerCase();
+
+            // Clear previous error
+            errorMessage.style.display = 'none';
+            
+            if (inputName === '') {
+                showError('Please enter your name!');
+                return;
+            }
+
+            // Check conditions (case insensitive)
+            if (inputName === 'lillian moscow') {
+                // Correct name - proceed to birthday screen
+                showBirthdayScreen();
+            } else if (inputName === 'lily') {
+                showError('Enter your name, not your nickname, dummy 😏');
+            } else if (inputName === 'lillian') {
+                showError('Try using your last name too 🤔');
+            } else if (inputName === 'lillian moskal' || inputName === 'lily moskal') {
+                showError('Moskal? I swear your last name is Moscow 🤨');
+            } else {
+                showError('Invalid name ❌');
+            }
+        }
+
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            
+            // Add shake effect to the card
+            const card = document.querySelector('.welcome-card');
+            card.style.animation = 'shake 0.5s ease-in-out';
+            setTimeout(() => {
+                card.style.animation = 'cardAppear 1s ease-out 0.5s forwards';
+            }, 500);
+        }
+
+        function showBirthdayScreen() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('birthdayScreen').style.display = 'flex';
+            
+            // Add scroll listener to show message section
+            setTimeout(() => {
+                window.addEventListener('scroll', checkScroll);
+                // Auto-show message after 3 seconds if user doesn't scroll
+                setTimeout(() => {
+                    const messageSection = document.getElementById('messageSection');
+                    messageSection.classList.add('visible');
+                }, 3000);
+            }, 1000);
+        }
+
+        function checkScroll() {
+            const messageSection = document.getElementById('messageSection');
+            const rect = messageSection.getBoundingClientRect();
+            
+            if (rect.top < window.innerHeight * 0.8) {
+                messageSection.classList.add('visible');
+                window.removeEventListener('scroll', checkScroll);
+            }
+        }
+
+        function showSurprise() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('surpriseVideo');
+            
+            // Set the video source to chikibang.mp4
+            video.src = 'chikibang.mp4';
+            
+            modal.style.display = 'flex';
+            video.play().catch(e => {
+                console.log('Video autoplay prevented:', e);
+                alert('Please tap the play button to start the video! 🎥');
+            });
+        }
+
+        function closeSurprise() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('surpriseVideo');
+            
+            video.pause();
+            video.currentTime = 0;
+            modal.style.display = 'none';
+        }
+
+        // Allow Enter key to submit name
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkName();
+            }
+        });
+
+        // Add shake animation to CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => console.log('SW registered'))
+                    .catch(registrationError => console.log('SW registration failed'));
+            });
+        }
+    </script>
+</body>
+</html>
