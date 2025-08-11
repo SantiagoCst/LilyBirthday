@@ -154,25 +154,11 @@
         .american-icons {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 20px;
             font-size: 2.5rem;
             margin-bottom: 20px;
             animation: bounce 2s infinite;
-        }
-
-        .roblox-icon {
-            width: 60px;
-            height: 60px;
-            background: #00A2FF;
-            border-radius: 15px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin: 0 10px;
-            animation: spin 3s linear infinite;
         }
 
         .scroll-indicator {
@@ -206,12 +192,6 @@
         .message-section.visible {
             transform: translateY(0);
             opacity: 1;
-        }
-
-        .cake-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            animation: bounce 2s infinite;
         }
 
         .birthday-message {
@@ -310,11 +290,6 @@
             60% { transform: translateY(-5px); }
         }
 
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
         @keyframes pulse {
             0%, 100% { opacity: 0.7; }
             50% { opacity: 1; }
@@ -325,14 +300,10 @@
             50% { transform: translateY(10px); }
         }
 
-        /* Remove the American flag background effect since we have the new background */
-        /* .stars-stripes styles removed */
-
         /* Responsive */
         @media (max-width: 400px) {
             .birthday-title { font-size: 2rem; }
             .american-icons { font-size: 2rem; }
-            .roblox-icon { width: 40px; height: 40px; font-size: 1rem; }
             .welcome-title { font-size: 2rem; }
             .birthday-message { font-size: 1.1rem; }
         }
@@ -343,12 +314,10 @@
     </style>
 </head>
 <body>
-    <!-- Remove the stars-stripes div since we have the new background -->
-
     <!-- Welcome Screen -->
     <div class="welcome-screen" id="welcomeScreen">
         <div class="welcome-card">
-            <div class="welcome-title">🎉 Welcome! 🎉</div>
+            <div class="welcome-title">Welcome!</div>
             <div class="welcome-subtitle">Please enter your full name to continue:</div>
             
             <input type="text" class="name-input" id="nameInput" placeholder="Enter your name..." maxlength="50">
@@ -362,20 +331,17 @@
     <!-- Birthday Screen -->
     <div class="birthday-screen" id="birthdayScreen">
         <div class="birthday-header">
-            <div class="birthday-title">Happy Birthday, Lily! 🎂</div>
+            <div class="birthday-title">Happy Birthday, Lily!</div>
             <div class="american-icons">
-                🇺🇸 🦅 🗽
-                <div class="roblox-icon">R</div>
-                ⭐ 🎆
+                🇺🇸 🦅 🇺🇸
             </div>
-            <div class="scroll-indicator">Scroll down for your special message</div>
+            <div class="scroll-indicator">Scroll down buddy</div>
             <div class="scroll-arrow">⬇️</div>
         </div>
 
         <div class="message-section" id="messageSection">
-            <div class="cake-icon">🎂</div>
             <div class="birthday-message">
-                Hey Lily! ✨<br><br>
+                Hey Lily!<br><br>
                 
                 On this special day, I want you to know how grateful I am to have you as a friend. 
                 Your energy, your humor, and your amazing personality light up every room you enter! 
@@ -383,14 +349,14 @@
                 
                 Whether we're talking about Roblox adventures, sharing laughs, or just being ourselves, 
                 you always make everything better. I hope this new year brings you all the happiness, 
-                success, and amazing experiences you deserve! 🎈
+                success, and amazing experiences you deserve!
                 <br><br>
                 
-                Get ready for your surprise... 🎁
+                Get ready for your surprise...
             </div>
             
             <button class="surprise-btn" onclick="showSurprise()">
-                What's the surprise? 🎵
+                What's the surprise?
             </button>
         </div>
     </div>
@@ -425,13 +391,13 @@
                 // Correct name - proceed to birthday screen
                 showBirthdayScreen();
             } else if (inputName === 'lily') {
-                showError('Enter your name, not your nickname, dummy 😏');
+                showError('Enter your name, not your nickname, dummy');
             } else if (inputName === 'lillian') {
-                showError('Try using your last name too 🤔');
+                showError('Try using your last name too');
             } else if (inputName === 'lillian moskal' || inputName === 'lily moskal') {
-                showError('Moskal? I swear your last name is Moscow 🤨');
+                showError('Moskal? I swear your last name is Moscow');
             } else {
-                showError('Invalid name ❌');
+                showError('Invalid name');
             }
         }
 
@@ -483,7 +449,7 @@
             modal.style.display = 'flex';
             video.play().catch(e => {
                 console.log('Video autoplay prevented:', e);
-                alert('Please tap the play button to start the video! 🎥');
+                alert('Please tap the play button to start the video!');
             });
         }
 
