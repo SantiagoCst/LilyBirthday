@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lily-birthday-v1';
+const CACHE_NAME = 'lily-birthday-v2';
 const BASE_URL = '/LilyBirthday';
 
 // Lista de archivos a cachear con rutas absolutas para GitHub Pages
@@ -91,3 +91,4 @@ self.addEventListener('fetch', event => {
       })
   );
 });
+
