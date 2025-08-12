@@ -383,10 +383,13 @@
             <div class="birthday-message">
                 Hey Lily!<br><br>
                 
-    its not ready yet
+                On this special day, I want you to know how grateful I am to have you as a friend. 
+                Your energy, your humor, and your amazing personality light up every room you enter! 
                 <br><br>
                 
-    dont be gossip
+                Whether we're talking about Roblox adventures, sharing laughs, or just being ourselves, 
+                you always make everything better. I hope this new year brings you all the happiness, 
+                success, and amazing experiences you deserve!
                 <br><br>
                 
                 Get ready for your surprise...
@@ -488,11 +491,6 @@
             document.getElementById('welcomeScreen').style.display = 'none';
             document.getElementById('birthdayScreen').style.display = 'flex';
             
-            // Start background music when entering birthday screen
-            setTimeout(() => {
-                startMusic();
-            }, 1000);
-            
             // Add scroll listener to show message section
             setTimeout(() => {
                 window.addEventListener('scroll', checkScroll);
@@ -563,6 +561,19 @@
                     .catch(registrationError => console.log('SW registration failed'));
             });
         }
+
+        // Start background music immediately when page loads
+        window.addEventListener('load', () => {
+            startMusic();
+        });
+
+        // Also try to start music on first user interaction (click/touch)
+        document.addEventListener('click', function startMusicOnInteraction() {
+            if (!isMusicPlaying) {
+                startMusic();
+            }
+            document.removeEventListener('click', startMusicOnInteraction);
+        }, { once: true });
     </script>
 </body>
 </html>
