@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday!</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#FF6B9D">
+    <meta name="theme-color" content="#8B5CF6">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Happy Birthday">
@@ -63,7 +63,7 @@
         }
 
         .welcome-title {
-            color: #FF6B9D;
+            color: #8B5CF6;
             font-size: 2.5rem;
             font-weight: bold;
             margin-bottom: 10px;
@@ -90,12 +90,12 @@
         }
 
         .name-input:focus {
-            border-color: #FF6B9D;
-            box-shadow: 0 0 20px rgba(255, 107, 157, 0.2);
+            border-color: #8B5CF6;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
         }
 
         .submit-btn {
-            background: linear-gradient(45deg, #FF6B9D, #FF8E9B);
+            background: linear-gradient(45deg, #8B5CF6, #A78BFA);
             color: white;
             border: none;
             padding: 15px 40px;
@@ -103,14 +103,14 @@
             font-weight: 600;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(255, 107, 157, 0.3);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
             transition: all 0.3s ease;
             margin-bottom: 20px;
         }
 
         .submit-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(255, 107, 157, 0.4);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.4);
         }
 
         .error-message {
@@ -202,7 +202,7 @@
         }
 
         .surprise-btn {
-            background: linear-gradient(45deg, #FF6B9D, #4A90E2);
+            background: linear-gradient(45deg, #8B5CF6, #7C3AED);
             color: white;
             border: none;
             padding: 18px 35px;
@@ -261,7 +261,7 @@
             position: absolute;
             top: -40px;
             right: 0;
-            background: #FF6B9D;
+            background: #8B5CF6;
             color: white;
             border: none;
             width: 40px;
@@ -272,6 +272,36 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        /* Music control styles */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(139, 92, 246, 0.9);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .music-control.visible {
+            display: flex;
         }
 
         /* Animations */
@@ -314,6 +344,16 @@
     </style>
 </head>
 <body>
+    <!-- Background Music -->
+    <audio id="backgroundMusic" loop preload="auto">
+        <source src="background-music.mp3" type="audio/mpeg">
+        <source src="background-music.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Music Control Button -->
+    <button class="music-control" id="musicControl" onclick="toggleMusic()">🎵</button>
+
     <!-- Welcome Screen -->
     <div class="welcome-screen" id="welcomeScreen">
         <div class="welcome-card">
@@ -373,6 +413,39 @@
     </div>
 
     <script>
+        let backgroundMusic = document.getElementById('backgroundMusic');
+        let musicControl = document.getElementById('musicControl');
+        let isMusicPlaying = false;
+
+        // Set initial volume low
+        backgroundMusic.volume = 0.2;
+
+        function startMusic() {
+            backgroundMusic.play().then(() => {
+                isMusicPlaying = true;
+                musicControl.textContent = '🎵';
+                musicControl.classList.add('visible');
+            }).catch(error => {
+                console.log('Music autoplay prevented:', error);
+                musicControl.classList.add('visible');
+            });
+        }
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                backgroundMusic.pause();
+                musicControl.textContent = '🔇';
+                isMusicPlaying = false;
+            } else {
+                backgroundMusic.play().then(() => {
+                    musicControl.textContent = '🎵';
+                    isMusicPlaying = true;
+                }).catch(error => {
+                    console.log('Music play failed:', error);
+                });
+            }
+        }
+
         function checkName() {
             const nameInput = document.getElementById('nameInput');
             const errorMessage = document.getElementById('errorMessage');
@@ -417,6 +490,11 @@
         function showBirthdayScreen() {
             document.getElementById('welcomeScreen').style.display = 'none';
             document.getElementById('birthdayScreen').style.display = 'flex';
+            
+            // Start background music when entering birthday screen
+            setTimeout(() => {
+                startMusic();
+            }, 1000);
             
             // Add scroll listener to show message section
             setTimeout(() => {
