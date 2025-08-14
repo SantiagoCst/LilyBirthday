@@ -318,7 +318,7 @@
             border-radius: 50%;
             font-size: 1.2rem;
             cursor: pointer;
-            display: none;
+            display: none !important;
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
@@ -331,7 +331,72 @@
         }
 
         .message-btn.visible {
+            display: flex !important;
+        }
+
+        /* Message Modal Styles */
+        .message-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .message-modal.visible {
             display: flex;
+        }
+
+        .message-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            animation: modalAppear 0.3s ease-out;
+        }
+
+        .message-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #666;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message-close:hover {
+            background: rgba(139, 92, 246, 0.1);
+            color: #8B5CF6;
+        }
+
+        .message-text {
+            color: #333;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        @keyframes modalAppear {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         /* Animations */
@@ -385,7 +450,7 @@
     <button class="music-control" id="musicControl" onclick="toggleMusic()">🎵</button>
 
     <!-- Message Button -->
-    <button class="message-btn visible" id="messageBtn" onclick="showMessage()">💌</button>
+    <button class="message-btn" id="messageBtn" onclick="showMessage()">💌</button>
 
     <!-- Welcome Screen -->
     <div class="welcome-screen" id="welcomeScreen">
@@ -431,7 +496,19 @@
         </div>
     </div>
 
-    <!-- Video Modal -->
+    <!-- Message Modal -->
+    <div class="message-modal" id="messageModal">
+        <div class="message-content">
+            <button class="message-close" onclick="closeMessage()">×</button>
+            <div class="message-text">
+                By the way, Lily, this is a temporal prompt, I will delete it later, but I really hope you don't think I forgot your birthday.<br><br>
+                
+                I wanted this to be a surprise for you, but there was no chance for Carson to get the app on your phone. I was hoping you'd get this Wednesday at night, but anyways, better late than never.<br><br>
+                
+                Have a happy birthday, Lily!
+            </div>
+        </div>
+    </div>
     <div class="video-modal" id="videoModal">
         <div class="video-container">
             <button class="close-btn" onclick="closeSurprise()">×</button>
@@ -479,9 +556,13 @@
 
         function showMessage() {
             console.log("Message button clicked!");
-            setTimeout(() => {
-                alert("By the way, Lily, this is a temporal prompt, I will delete it later, but I really hope you don't think I forgot your birthday.\n\nI wanted this to be a surprise for you, but there was no chance for Carson to get the app on your phone. I was hoping you'd get this Wednesday at night, but anyways, better late than never.\n\nHave a happy birthday, Lily!");
-            }, 100);
+            const modal = document.getElementById('messageModal');
+            modal.classList.add('visible');
+        }
+
+        function closeMessage() {
+            const modal = document.getElementById('messageModal');
+            modal.classList.remove('visible');
         }
 
         function checkName() {
