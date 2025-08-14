@@ -304,6 +304,36 @@
             display: flex;
         }
 
+        /* Message button styles */
+        .message-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(139, 92, 246, 0.9);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .message-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .message-btn.visible {
+            display: flex;
+        }
+
         /* Animations */
         @keyframes cardAppear {
             to { transform: scale(1); }
@@ -354,6 +384,9 @@
     <!-- Music Control Button -->
     <button class="music-control" id="musicControl" onclick="toggleMusic()">🎵</button>
 
+    <!-- Message Button -->
+    <button class="message-btn" id="messageBtn" onclick="showMessage()">💌</button>
+
     <!-- Welcome Screen -->
     <div class="welcome-screen" id="welcomeScreen">
         <div class="welcome-card">
@@ -381,13 +414,13 @@
 
         <div class="message-section" id="messageSection">
             <div class="birthday-message">
-                Hey Lily!<br><br>
+                Hey Lily, happy birthday!<br><br>
                 
-                wait
-                <br><br>
+                I really hope you enjoy your special day. I want you to know how grateful I am to have you as a friend. 
+                Really, having met you guys that day in Roblox was one of the best things that could've happened to me.<br><br>
                 
-                it isnt 14 yet
-                <br><br>
+                I really love and appreciate you. You're a great friend and person, and you know I'll always be here 
+                for you whenever you need me. Enjoy, Lily!<br><br>
                 
                 Get ready for your surprise...
             </div>
@@ -412,6 +445,7 @@
     <script>
         let backgroundMusic = document.getElementById('backgroundMusic');
         let musicControl = document.getElementById('musicControl');
+        let messageBtn = document.getElementById('messageBtn');
         let isMusicPlaying = false;
 
         // Set initial volume low
@@ -441,6 +475,10 @@
                     console.log('Music play failed:', error);
                 });
             }
+        }
+
+        function showMessage() {
+            alert("By the way, Lily, this is a temporal prompt, I will delete it later, but I really hope you don't think I forgot your birthday.\n\nI wanted this to be a surprise for you, but there was no chance for Carson to get the app on your phone. I was hoping you'd get this Wednesday at night, but anyways, better late than never.\n\nHave a happy birthday, Lily!");
         }
 
         function checkName() {
@@ -475,18 +513,14 @@
             const errorMessage = document.getElementById('errorMessage');
             errorMessage.textContent = message;
             errorMessage.style.display = 'block';
-            
-            // Add shake effect to the card
-            const card = document.querySelector('.welcome-card');
-            card.style.animation = 'shake 0.5s ease-in-out';
-            setTimeout(() => {
-                card.style.animation = 'cardAppear 1s ease-out 0.5s forwards';
-            }, 500);
         }
 
         function showBirthdayScreen() {
             document.getElementById('welcomeScreen').style.display = 'none';
             document.getElementById('birthdayScreen').style.display = 'flex';
+            
+            // Show message button only in birthday screen
+            messageBtn.classList.add('visible');
             
             // Add scroll listener to show message section
             setTimeout(() => {
@@ -574,4 +608,3 @@
     </script>
 </body>
 </html>
-
