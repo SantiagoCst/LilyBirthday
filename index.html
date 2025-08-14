@@ -385,7 +385,7 @@
     <button class="music-control" id="musicControl" onclick="toggleMusic()">🎵</button>
 
     <!-- Message Button -->
-    <button class="message-btn" id="messageBtn" onclick="showMessage()">💌</button>
+    <button class="message-btn visible" id="messageBtn" onclick="showMessage()">💌</button>
 
     <!-- Welcome Screen -->
     <div class="welcome-screen" id="welcomeScreen">
@@ -478,7 +478,10 @@
         }
 
         function showMessage() {
-            alert("By the way, Lily, this is a temporal prompt, I will delete it later, but I really hope you don't think I forgot your birthday.\n\nI wanted this to be a surprise for you, but there was no chance for Carson to get the app on your phone. I was hoping you'd get this Wednesday at night, but anyways, better late than never.\n\nHave a happy birthday, Lily!");
+            console.log("Message button clicked!");
+            setTimeout(() => {
+                alert("By the way, Lily, this is a temporal prompt, I will delete it later, but I really hope you don't think I forgot your birthday.\n\nI wanted this to be a surprise for you, but there was no chance for Carson to get the app on your phone. I was hoping you'd get this Wednesday at night, but anyways, better late than never.\n\nHave a happy birthday, Lily!");
+            }, 100);
         }
 
         function checkName() {
